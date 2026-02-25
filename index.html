@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7wk · Spanish</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0c10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.7);
+            transition: box-shadow 0.2s;
+        }
+
+        /* Розмитий фон береться із змінної --bg-image, яку встановлює скрипт */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            background-image: var(--bg-image, none);
+            background-size: cover;
+            background-position: center;
+            filter: blur(18px) brightness(0.7);
+            z-index: 0;
+            transition: background-image 0.2s;
+            background-color: #1a1f2b; /* колір, якщо зображення немає */
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(10, 12, 18, 0.65);
+            backdrop-filter: blur(2px);
+            padding: 28px 24px;
+            border-radius: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #f0f3f8;
+        }
+
+        /* Аватарка тепер звичайне зображення */
+        .avatar {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            object-fit: cover;      /* щоб правильно заповнювати коло */
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            display: block;
+            margin-bottom: 20px;    /* відступ замість wrapper */
+        }
+
+        .profile-name {
+            font-size: 1.35rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            word-break: break-word;
+        }
+
+        .profile-badge {
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.08);
+            padding: 6px 14px;
+            border-radius: 40px;
+            margin-bottom: 28px;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #cdd9ff;
+        }
+
+        .links-grid {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(20, 25, 35, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f0f3fa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.15s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .link-item i {
+            width: 26px;
+            font-size: 1.3rem;
+            color: #b1c3ff;
+            text-align: center;
+        }
+
+        .link-item:hover {
+            background: rgba(45, 55, 75, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5);
+        }
+
+        .link-item span {
+            flex: 1;
+        }
+
+        .link-item small {
+            opacity: 0.7;
+            font-weight: 400;
+            font-size: 0.9rem;
+            margin-left: 6px;
+            color: #b7c2e0;
+        }
+
+        .footer-area {
+            width: 100%;
+            text-align: center;
+            margin-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        .legal-links {
+            font-size: 0.75rem;
+            color: #8e9bb5;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 16px;
+        }
+
+        .legal-links span {
+            cursor: default;
+        }
+
+        .legal-links span:hover {
+            color: #ced8f0;
+        }
+
+        .dot-sep {
+            opacity: 0.5;
+            font-weight: 300;
+        }
+
+        @media (max-width: 400px) {
+            .card-content { padding: 20px 16px; }
+            .avatar { width: 96px; height: 96px; }
+            .link-item { padding: 12px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="profileCard">
+        <div class="card-content">
+            <!-- 
+                АВАТАРКА: простий тег img.
+                Змініть атрибут src на шлях до вашого зображення.
+                Файл покладіть у ту саму папку, що й цей HTML.
+            -->
+            <img src="img.jpg" alt="avatar" class="avatar" id="avatarImg">
+
+            <!-- Ім'я профілю -->
+            <div class="profile-name">
+                L7wk / Part of team 7&7 | 18 | 2.1k
+            </div>
+            <div class="profile-badge">
+                <i class="fas fa-user-ninja" style="margin-right: 6px;"></i> @l7wkrl · 7&7
+            </div>
+
+            <!-- Сітка посилань -->
+            <div class="links-grid">
+                <!-- <a href="#" class="link-item"><i class="fas fa-donate"></i> <span>Donations</span></a> -->
+                <a href="https://discord.gg/NCK8c3ubrS" class="link-item"><i class="fab fa-discord"></i> <span>Discord</span></a>
+                <a href="https://www.twitch.tv/l7wkrl" class="link-item"><i class="fab fa-twitch"></i> <span>Twitch <small>· l7wkrl</small></span></a>
+                <a href="https://x.com/RocketLeag60745" class="link-item"><i class="fab fa-twitter"></i> <span>X</span></a>
+                <a href="https://www.tiktok.com/@l7wkrl?lang=es" class="link-item"><i class="fab fa-tiktok"></i> <span>TikTok</span></a>
+                <!-- <a href="#" class="link-item"><i class="fab fa-instagram"></i> <span>Instagram</span></a> -->
+            </div>
+
+            <!-- Футер -->
+            <div class="footer-area">
+                <div class="legal-links">
+                    <span>Cookie Preferences</span>
+                    <span class="dot-sep">•</span>
+                    <span>Report</span>
+                    <span class="dot-sep">•</span>
+                    <span>Privacy</span>
+                    <span class="dot-sep">•</span>
+                    <span>Explore</span>
+                </div>
+            </div>
+        </div> <!-- .card-content -->
+    </div> <!-- .card -->
+
+    <script>
+        (function() {
+            const card = document.getElementById('profileCard');
+            const avatarImg = document.getElementById('avatarImg');
+
+            // Функція оновлення фону на основі src аватарки
+            function setBackgroundFromAvatar() {
+                const imgSrc = avatarImg.src; // це буде повний шлях (напр. file://... або http://...)
+                if (imgSrc && !imgSrc.endsWith('your-avatar.jpg') && !avatarImg.hasAttribute('data-empty')) {
+                    // Якщо src не порожній і не вказує на заглушку, встановлюємо фон
+                    card.style.setProperty('--bg-image', `url('${imgSrc}')`);
+                } else {
+                    // Якщо зображення не задане — прибираємо фон (буде темне тло)
+                    card.style.setProperty('--bg-image', 'none');
+                }
+            }
+
+            // Викликаємо при завантаженні сторінки
+            setBackgroundFromAvatar();
+
+            // Якщо зображення не завантажилось (наприклад, файл відсутній) — теж прибираємо фон
+            avatarImg.onerror = function() {
+                card.style.setProperty('--bg-image', 'none');
+                avatarImg.setAttribute('data-empty', 'true'); // мітка, що картинка не дійсна
+            };
+
+            // Опціонально: якщо ви зміните src вручну в коді (наприклад, через інструменти розробника),
+            // можна оновити фон подвійним кліком на аватарку (для зручності)
+            avatarImg.addEventListener('dblclick', function() {
+                setBackgroundFromAvatar();
+            });
+        })();
+    </script>
+</body>
+</html>
